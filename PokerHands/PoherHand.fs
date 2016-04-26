@@ -75,33 +75,33 @@ module PokerHand =
                  |FourOfAKind
                  |StraightFlush
 
-    let groupCardsByValue Hand = Seq.groupBy getValue Hand.Cards
+    let groupCardsByValue hand = Seq.groupBy getValue hand.Cards
 
-    let extractGroupOfCardsByCount count Hand= 
-       let cardsGrouped = groupCardsByValue Hand
+    let extractGroupOfCardsByCount count hand= 
+       let cardsGrouped = groupCardsByValue hand
        Seq.filter (fun (key,values) -> (Seq.length values) = count) cardsGrouped
      
     let extractPairs = extractGroupOfCardsByCount 2
     let extractThrees = extractGroupOfCardsByCount 3
     let extractFours = extractGroupOfCardsByCount 4
 
-    let (|IsFourOfAKind|_|) Hand =
-       match Seq.length (extractFours Hand) with
+    let (|IsFourOfAKind|_|) hand =
+       match Seq.length (extractFours hand) with
        | 1 -> Some IsFourOfAKind
        | _ -> None
 
-    let (|IsThreeOfAKind|_|) Hand = 
-       match Seq.length (extractThrees Hand) with
+    let (|IsThreeOfAKind|_|) hand = 
+       match Seq.length (extractThrees hand) with
        | 1 -> Some IsThreeOfAKind
        | _ -> None
 
-    let (|IsTwoPairs|_|) Hand = 
-       match Seq.length (extractPairs Hand) with
+    let (|IsTwoPairs|_|) hand = 
+       match Seq.length (extractPairs hand) with
        | 2 -> Some IsTwoPairs
        | _ -> None
 
-    let (|IsPair|_|) Hand = 
-       match Seq.length (extractPairs Hand) with
+    let (|IsPair|_|) hand = 
+       match Seq.length (extractPairs hand) with
        | 1 -> Some IsPair
        | _ -> None
 
