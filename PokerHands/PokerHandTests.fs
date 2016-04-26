@@ -28,3 +28,8 @@ let ``should Find Three of a kind when three cards have the same value`` () =
 let ``should Find four of a kind when four cards have the same value`` () = 
     let obtained = computeScoreFromText "2D AH AC AS AD"
     Assert.AreEqual(FourOfAKind, obtained)
+
+[<Test>]
+let ``should Find full house when three cards have same value and two other are a pair`` () = 
+    let obtained = computeScoreFromText "2D 2H AC AS AD"
+    Assert.AreEqual(FullHouse, obtained)

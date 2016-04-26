@@ -90,6 +90,13 @@ module PokerHand =
        | 1 -> Some IsFourOfAKind
        | _ -> None
 
+    let (|IsFullHouse|_|) hand =
+       let threeOfAKind = Seq.length (extractThrees hand) = 1
+       let pair = Seq.length (extractPairs hand) = 1
+       match threeOfAKind, pair with
+       | true,true -> Some IsFullHouse
+       | _,_ -> None
+
     let (|IsThreeOfAKind|_|) hand = 
        match Seq.length (extractThrees hand) with
        | 1 -> Some IsThreeOfAKind
@@ -108,10 +115,10 @@ module PokerHand =
     let computeScore hand = 
         match hand with
         | IsFourOfAKind -> FourOfAKind
+        | IsFullHouse -> FullHouse
         | IsThreeOfAKind -> ThreeOfAKind
         | IsTwoPairs -> TwoPairs
         | IsPair -> Pair
         | _ -> HighCard
-
 
     let computeScoreFromText = parseHand >> computeScore
