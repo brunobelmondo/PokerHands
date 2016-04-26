@@ -15,6 +15,11 @@ let ``should Find Pair when two cards have the same value`` () =
     Assert.AreEqual(Pair, obtained)
 
 [<Test>]
+let ``should Find Two Pairs when two cards have the same value two times`` () = 
+    let obtained = computeScoreFromText "2D 4H 4C AS AD"
+    Assert.AreEqual(TwoPairs, obtained)
+
+[<Test>]
 let ``should Find Three of a kind when three cards have the same value`` () = 
     let obtained = computeScoreFromText "2D 3H AC AS AD"
     Assert.AreEqual(ThreeOfAKind, obtained)

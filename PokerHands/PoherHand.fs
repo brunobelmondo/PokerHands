@@ -77,34 +77,39 @@ module PokerHand =
 
     let groupCardsByValue Hand = Seq.groupBy getValue Hand.Cards
 
-    let (|IsFourOfAKind|_|) Hand = 
+    let extractGroupOfCardsByCount count Hand= 
        let cardsGrouped = groupCardsByValue Hand
-       match Seq.length cardsGrouped with
-       | 2 -> Some IsFourOfAKind
+       Seq.filter (fun (key,values) -> (Seq.length values) = count) cardsGrouped
+     
+    let extractPairs = extractGroupOfCardsByCount 2
+    let extractThrees = extractGroupOfCardsByCount 3
+    let extractFours = extractGroupOfCardsByCount 4
+
+    let (|IsFourOfAKind|_|) Hand =
+       match Seq.length (extractFours Hand) with
+       | 1 -> Some IsFourOfAKind
        | _ -> None
 
     let (|IsThreeOfAKind|_|) Hand = 
-       let cardsGrouped = groupCardsByValue Hand
-       match Seq.length cardsGrouped with
-       | 3 -> Some IsThreeOfAKind
+       match Seq.length (extractThrees Hand) with
+       | 1 -> Some IsThreeOfAKind
        | _ -> None
 
     let (|IsTwoPairs|_|) Hand = 
-       let cardsGrouped = groupCardsByValue Hand
-       match Seq.toList cardsGrouped with
-       | (k1,l1)::b::c when l1.length = 2-> Some IsTwoPairs
+       match Seq.length (extractPairs Hand) with
+       | 2 -> Some IsTwoPairs
        | _ -> None
 
     let (|IsPair|_|) Hand = 
-       let cardsGrouped = groupCardsByValue Hand
-       match Seq.length cardsGrouped with
-       | 4 -> Some IsPair
+       match Seq.length (extractPairs Hand) with
+       | 1 -> Some IsPair
        | _ -> None
 
     let computeScore hand = 
         match hand with
         | IsFourOfAKind -> FourOfAKind
         | IsThreeOfAKind -> ThreeOfAKind
+        | IsTwoPairs -> TwoPairs
         | IsPair -> Pair
         | _ -> HighCard
 
