@@ -48,6 +48,7 @@ module PokerHand =
 
 
     let getValue card = card.Value
+    let getSuit card = card.Suit
 
     let parseCard valueToParse suitToParse =
         let value = parseValue valueToParse
@@ -76,6 +77,7 @@ module PokerHand =
                  |StraightFlush
 
     let groupCardsByValue hand = Seq.groupBy getValue hand.Cards
+    let groupCardsBySuit hand = Seq.groupBy getSuit hand.Cards
 
     let extractGroupOfCardsByCount count hand= 
        let cardsGrouped = groupCardsByValue hand
@@ -112,10 +114,17 @@ module PokerHand =
        | 1 -> Some IsPair
        | _ -> None
 
+    let (|IsFlush|_|) hand = 
+       let suits = groupCardsBySuit hand
+       match Seq.length (suits) with
+       | 1 -> Some IsFlush
+       | _ -> None
+
     let computeScore hand = 
         match hand with
         | IsFourOfAKind -> FourOfAKind
         | IsFullHouse -> FullHouse
+        | IsFlush -> Flush
         | IsThreeOfAKind -> ThreeOfAKind
         | IsTwoPairs -> TwoPairs
         | IsPair -> Pair
