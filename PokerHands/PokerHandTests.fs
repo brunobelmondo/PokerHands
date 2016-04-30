@@ -2,8 +2,7 @@
 
 open System
 open NUnit.Framework
-open PokerHand
-open Parser
+open Scoring
 open Main
 
 [<Test>]

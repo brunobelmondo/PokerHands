@@ -2,6 +2,7 @@
 
 open Parser
 open PokerHand
+open Scoring
 
 module Main=
     let computeScoreFromText = parseHand >> computeScore
