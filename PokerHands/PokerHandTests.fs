@@ -3,6 +3,8 @@
 open System
 open NUnit.Framework
 open PokerHand
+open Parser
+open Main
 
 [<Test>]
 let ``should Find High Card when nothing special`` () = 
